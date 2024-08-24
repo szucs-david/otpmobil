@@ -38,7 +38,7 @@ public class DataLoader {
 
     private static final List<String> ACCEPTED_PAYMENT_METHODS = Arrays.asList(CARD_PAYMENT, TRANSFER_PAYMENT);
 
-    private static final String[] DATE_PATTERNS = new String[]{"yyyy.MM.dd", "yyyy.MM.d"};
+    private static final String[] DATE_PATTERNS = new String[]{"yyyy.MM.dd", "yyyy.MM.d", "yyyy.M.d", "yyyy.M.dd"};
 
     public static final String SEPARATOR = ";";
 
@@ -56,17 +56,18 @@ public class DataLoader {
                     continue;
                 }
 
+                final String webshopId = values[CUSTOMER_WEBSHOP_ID_INDEX];
                 final String customerId = values[CUSTOMER_ID_INDEX];
 
-                if (customerIds.contains(customerId)) {
-                    logError("Már létezik ilyen ügyfél ezzel az azonositóval: " + line);
+                if (customerIds.contains(webshopId + customerId)) {
+                    logError("Már létezik ilyen ügyfél ezzel az azonositóval ebben a webshop-ban: " + line);
                     continue;
                 }
 
                 customerIds.add(customerId);
 
                 final Customer customer = new Customer(
-                        values[CUSTOMER_WEBSHOP_ID_INDEX],
+                        webshopId,
                         customerId,
                         values[CUSTOMER_NAME_INDEX],
                         values[CUSTOMER_ADDRESS_INDEX]

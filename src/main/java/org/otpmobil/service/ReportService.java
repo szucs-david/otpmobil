@@ -18,7 +18,8 @@ public class ReportService {
 
         for (final Customer customer : customers) {
             final double total = payments.stream()
-                    .filter(payment -> payment.getCustomerId().equals(customer.getCustomerId()))
+                    .filter(payment -> payment.getCustomerId().equals(customer.getCustomerId())
+                            && payment.getWebshopId().equals(customer.getWebshopId()))
                     .mapToDouble(Payment::getAmount)
                     .sum();
 
